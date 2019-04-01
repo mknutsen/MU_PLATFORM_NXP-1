@@ -1,19 +1,24 @@
 [submodule "Common/MU"]
 	path = Common/MU
-	url = https://github.com/Microsoft/mu_plus.git
-	branch = release/201808
+	url = https://windowspartners.visualstudio.com/MSCoreUEFI/_git/mu_plus
+	branch = personal/maknutse/frontpage
 [submodule "MU_BASECORE"]
 	path = MU_BASECORE
-	url = https://github.com/Microsoft/mu_basecore.git
-	branch = release/201808
+	url = https://windowspartners.visualstudio.com/MSCoreUEFI/_git/mu_basecore
+	branch = personal/maknutse/frontpage
 [submodule "Common/MU_TIANO"]
 	path = Common/MU_TIANO
-	url = https://github.com/Microsoft/mu_tiano_plus.git
-	branch = release/201808
+	url = https://windowspartners.visualstudio.com/MSCoreUEFI/_git/mu_tiano_plus
+	branch = personal/maknutse/frontpage
 [submodule "Silicon/ARM/MU_TIANO"]
 	path = Silicon/ARM/MU_TIANO
-	url = https://github.com/Microsoft/mu_silicon_arm_tiano.git
-	branch = release/201808
+	url = https://windowspartners.visualstudio.com/MSCoreUEFI/_git/mu_silicon_tiano_arm
+	branch = personal/maknutse/frontpage
 [submodule "Silicon/ARM/NXP"]
 	path = Silicon/ARM/NXP
-	url = https://github.com/ms-iot/MU_SILICON_NXP.git
+	url = https://github.com/mknutsen/MU_SILICON_NXP
+	branch = personal/maknutse/frontpage
+[submodule "Common/MU_OEM_SAMPLE"]
+	path = Common/MU_OEM_SAMPLE
+	url = https://windowspartners.visualstudio.com/MSCoreUEFI/_git/mu_oem_sample
+	branch = personal/maknutse/frontpage

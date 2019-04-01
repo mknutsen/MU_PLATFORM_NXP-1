@@ -85,15 +85,25 @@ READ_STATUS        = TRUE
 READ_LOCK_CAP      = TRUE
 READ_LOCK_STATUS   = TRUE
 FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
-
+  INF iMX8Pkg/Drivers/iMX8Dxe/iMX8Dxe.inf
   INF MdeModulePkg/Core/Dxe/DxeMain.inf
   INF MdeModulePkg/Universal/PCD/Dxe/Pcd.inf
-
+  INF DfciPkg/SettingsManager/SettingsManagerDxe.inf
+  INF MsGraphicsPkg/MsUiTheme/Dxe/MsUiThemeProtocol.inf
+  INF MsGraphicsPkg/DisplayEngineDxe/DisplayEngineDxe.inf
+  INF OemPkg/BootMenu/BootMenu.inf
+  INF OemPkg/FrontPage/FrontPage.inf
+  INF PcBdsPkg/MsBootPolicy/MsBootPolicy.inf
+#  INF MsGraphicsPkg/SimpleWindowManagerDxe/SimpleWindowManagerDxe.inf
   #
   # PI DXE Drivers producing Architectural Protocols (EFI Services)
   #
   INF ArmPkg/Drivers/CpuDxe/CpuDxe.inf
-
+  INF MdeModulePkg/Universal/BootManagerPolicyDxe/BootManagerPolicyDxe.inf
+  INF MdeModulePkg/Universal/RegularExpressionDxe/RegularExpressionDxe.inf
+  INF DfciPkg/IdentityAndAuthManager/IdentityAndAuthManagerDxe.inf
+  INF DfciPkg/DfciManager/DfciManager.inf
+  INF MdeModulePkg/Universal/Variable/VarLockNullDxe/VarLockNullDxe.inf
   INF MdeModulePkg/Core/RuntimeDxe/RuntimeDxe.inf
   INF ArmPkg/Drivers/ArmGic/ArmGicDxe.inf
   INF ArmPkg/Drivers/TimerDxe/TimerDxe.inf
@@ -106,7 +116,7 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
   INF EmbeddedPkg/RealTimeClockRuntimeDxe/RealTimeClockRuntimeDxe.inf
   INF EmbeddedPkg/MetronomeDxe/MetronomeDxe.inf
 
-#  INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
+  #INF MdeModulePkg/Universal/Variable/RuntimeDxe/VariableRuntimeDxe.inf
   INF MdeModulePkg/Universal/Variable/EmuRuntimeDxe/EmuVariableRuntimeDxe.inf
   INF MdeModulePkg/Universal/FaultTolerantWriteDxe/FaultTolerantWriteDxe.inf
 
@@ -122,9 +132,15 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
   #
   # Multiple Console IO support
   #
+  INF MsGraphicsPkg/OnScreenKeyboardDxe/OnScreenKeyboardDxe.inf
+  INF MsGraphicsPkg/RenderingEngineDxe/RenderingEngineDxe.inf
+  INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
+  #INF MsGraphicsPkg/GopOverrideDxe/GopOverrideDxe.inf
   INF MdeModulePkg/Universal/Console/ConPlatformDxe/ConPlatformDxe.inf
   INF MdeModulePkg/Universal/Console/ConSplitterDxe/ConSplitterDxe.inf
   INF MdeModulePkg/Universal/Console/GraphicsConsoleDxe/GraphicsConsoleDxe.inf
+  INF MsGraphicsPkg/SimpleWindowManagerDxe/SimpleWindowManagerDxe.inf
+  #INF MsGraphicsPkg/RenderingEngineDxe/RenderingEngineDxe.inf
   INF MdeModulePkg/Universal/Console/TerminalDxe/TerminalDxe.inf
   INF MdeModulePkg/Universal/SerialDxe/SerialDxe.inf
 
@@ -154,12 +170,9 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
   INF MdeModulePkg/Bus/Usb/UsbMouseDxe/UsbMouseDxe.inf
   INF MdeModulePkg/Bus/Pci/NonDiscoverablePciDeviceDxe/NonDiscoverablePciDeviceDxe.inf
 
-!ifndef CONFIG_HEADLESS
   #
   # Graphics Output Protocol
   #
-  INF ArmPlatformPkg/Drivers/LcdGraphicsOutputDxe/LcdGraphicsOutputDxe.inf
-!endif
 
   #
   # UEFI applications
@@ -168,8 +181,8 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
 
   #
   # iMX8M platform driver
-  #
-  INF iMX8Pkg/Drivers/iMX8Dxe/iMX8Dxe.inf
+  # Moved up
+
 
   #
   # SMBIOS/DMI
@@ -181,10 +194,10 @@ FvNameGuid         = B73FE497-B92E-416e-8326-45AD0D270092
   # Bds
   #
   INF MdeModulePkg/Universal/DevicePathDxe/DevicePathDxe.inf
-  INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
+  #INF MdeModulePkg/Universal/DisplayEngineDxe/DisplayEngineDxe.inf
   INF MdeModulePkg/Universal/SetupBrowserDxe/SetupBrowserDxe.inf
   INF MdeModulePkg/Universal/BdsDxe/BdsDxe.inf
-  INF MdeModulePkg/Application/UiApp/UiApp.inf
+  #INF MdeModulePkg/Application/UiApp/UiApp.inf
 
   #
   # EBC
