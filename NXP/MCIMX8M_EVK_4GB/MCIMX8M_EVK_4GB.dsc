@@ -42,7 +42,7 @@
 #
 ################################################################################
 
-!include iMX8Pkg/iMX8ConfigDsc.inc
+#!include iMX8Pkg/iMX8ConfigDsc.inc
 
 # Include common peripherals
 !include Silicon/ARM/NXP/iMX8Pkg/iMX8CommonDsc.inc
@@ -181,3 +181,14 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoHorizontalResolution|0
   gEfiMdeModulePkgTokenSpaceGuid.PcdVideoVerticalResolution|0
 
+
+
+[BuildOptions]
+#
+# For each enabled CONFIG_* flag in the dsc files, define that flag in C code.
+# Note: The = sign in BuildOptions section appends to the existing macro, while
+# == can be used to replace its value. See the EDK2 DSC specs.
+#
+
+# CPU_* compiler flag is used to select constants for iMX8.h
+  GCC:*_*_*_CC_FLAGS = -D$(BOARD_NAME) -DCPU_$(IMX_FAMILY)
