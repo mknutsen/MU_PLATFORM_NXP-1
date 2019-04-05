@@ -54,6 +54,11 @@
 ################################################################################
 [LibraryClasses.common]
   ArmPlatformLib|$(BOARD_DIR)/Library/iMX8BoardLib/iMX8BoardLib.inf
+  SafeIntLib|MdePkg/Library/BaseSafeIntLib/BaseSafeIntLib.inf
+  BmpSupportLib|MdeModulePkg/Library/BaseBmpSupportLib/BaseBmpSupportLib.inf
+  DisplayDeviceStateLib|MsGraphicsPkg/Library/DisplayDeviceStateLibNull/DisplayDeviceStateLibNull.inf
+  BootGraphicsLib|MsGraphicsPkg/Library/BootGraphicsLib/BootGraphicsLib.inf
+  BootGraphicsProviderLib|OemPkg/Library/BootGraphicsProviderLib/BootGraphicsProviderLib.inf
 
 [Components.common]
   #
@@ -62,12 +67,13 @@
   MdeModulePkg/Universal/Acpi/AcpiTableDxe/AcpiTableDxe.inf
   MdeModulePkg/Universal/Acpi/AcpiPlatformDxe/AcpiPlatformDxe.inf
   $(BOARD_DIR)/AcpiTables/AcpiTables.inf
-
+  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
   #
   # SMBIOS/DMI
   #
   MdeModulePkg/Universal/SmbiosDxe/SmbiosDxe.inf
   $(BOARD_DIR)/Drivers/SmbiosPlatformDxe/SmbiosPlatformDxe.inf
+  MdeModulePkg/Universal/Acpi/BootGraphicsResourceTableDxe/BootGraphicsResourceTableDxe.inf
 
 ################################################################################
 #
@@ -83,9 +89,14 @@
   gEfiMdeModulePkgTokenSpaceGuid.PcdTurnOffUsbLegacySupport|TRUE
 
 [PcdsFixedAtBuild.common]
+  #gOemPkgTokenSpaceGuid.PcdLogoFile|{ 0xc01a5998, 0x1109, 0x429b, { 0xa2, 0xa1, 0x4a, 0xc3, 0xcb, 0x65, 0x1e, 0x8d } }
+  gOemPkgTokenSpaceGuid.PcdPostBackgroundColor|0x004F4F4F
+
   gEfiMdePkgTokenSpaceGuid.PcdDebugPropertyMask|0x2F
   gEfiMdePkgTokenSpaceGuid.PcdReportStatusCodePropertyMask|0x7
   gEfiMdePkgTokenSpaceGuid.PcdFixedDebugPrintErrorLevel|0x80080246
+
+  gEfiMdePkgTokenSpaceGuid.PcdDebugPrintErrorLevel|0x80080246
 
   # FirmwareRevision 0.1
   gEfiMdeModulePkgTokenSpaceGuid.PcdFirmwareRevision|0x00000001
