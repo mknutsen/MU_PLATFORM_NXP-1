@@ -14,20 +14,44 @@ import struct
 from datetime import datetime
 from datetime import date
 import time
+from MuEnvironment.MuUpdate import MuUpdate
 from MuEnvironment.UefiBuild import UefiBuilder
+from MuEnvironment.PlatformSettingsManager import PlatformSettingsManager
 
 #
 #==========================================================================
 # PLATFORM BUILD ENVIRONMENT CONFIGURATION
 #
-SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
-WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
-REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
-PROJECT_SCOPE = ('imxfamily', 'imx8')
 
-MODULE_PKGS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
-MODULE_PKG_PATHS = os.pathsep.join(os.path.join(WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
+class SettingsManager(PlatformSettingsManager):
+    def __init__(self, *args):
+        super().__init__(args)
+        SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+        self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
+        self.REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
+        self.PRODUCTION_SCOPE = ('production', )
+        self.BASE_SCOPE = ('imxfamily', 'imx8')
+        MODULE_PKGS = ['MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO']
+        self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
 
+    def GetProjectScope(self, caller):
+        ''' get scope '''
+        SCOPE = self.BASE_SCOPE
+        if (caller is MuUpdate.CALLER_TAG) or ("production" in self.args):
+            SCOPE += self.PRODUCTION_SCOPE
+        return SCOPE
+
+    def GetWorkspaceRoot(self, caller):
+        ''' get WorkspacePath '''
+        return self.WORKSPACE_PATH
+
+    def GetModulePkgsPath(self, caller):
+        ''' get module packages path '''
+        return self.MODULE_PKG_PATHS
+
+    def GetRequiredRepos(self, caller):
+        ''' get required repos '''
+        return self.REQUIRED_REPOS
 
 #
 # Supported Profiles and Settings based on the profile.  This allows easier grouping
@@ -43,9 +67,6 @@ gProfile = {
 # Subclass the UEFI builder and add platform specific functionality.
 #
 class PlatformBuilder(UefiBuilder):
-
-    def __init__(self, WorkSpace, PackagesPath, PInManager, PInHelper, args):
-        super(PlatformBuilder, self).__init__(WorkSpace, PackagesPath, PInManager, PInHelper, args)
 
     def SetPlatformEnv(self):
         logging.debug("PlatformBuilder SetPlatformEnv")
@@ -236,15 +257,3 @@ class PlatformBuilder(UefiBuilder):
     #
     def PlatformFlashImage(self):
         raise Exception("Flashing not supported")
-
-
-# Smallest 'main' possible. Please don't add unnecessary code.
-if __name__ == '__main__':
-  # If CommonBuildEntry is not found, the mu_environment pip module has not been installed correctly
-  try:
-    from MuEnvironment import CommonBuildEntry
-  except ImportError:
-    raise RuntimeError("Please run \"python -m install --upgrade mu_build\"\nContact MS Core UEFI team if you run into any problems");
-
-  # Now that we have access to the entry, hand off to the common code.
-  CommonBuildEntry.build_entry(SCRIPT_PATH, WORKSPACE_PATH, REQUIRED_REPOS, PROJECT_SCOPE, MODULE_PKGS, MODULE_PKG_PATHS, worker_module='PlatformBuild')

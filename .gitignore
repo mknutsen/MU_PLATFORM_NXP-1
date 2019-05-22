@@ -9,5 +9,5 @@ fit.log
 /vsproj
 /.vs
 Vbt.btf
-
+*_LOG.*
 *_extdep/
