@@ -24,8 +24,7 @@ from MuEnvironment.PlatformSettingsManager import PlatformSettingsManager
 #
 
 class SettingsManager(PlatformSettingsManager):
-    def __init__(self, *args):
-        super().__init__(args)
+    def __init__(self):
         SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
         self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
         self.REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
@@ -33,11 +32,12 @@ class SettingsManager(PlatformSettingsManager):
         self.BASE_SCOPE = ('imxfamily', 'imx8')
         MODULE_PKGS = ['MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO']
         self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
+        self.production = None
 
     def GetProjectScope(self, caller):
         ''' get scope '''
         SCOPE = self.BASE_SCOPE
-        if (caller is MuUpdate.CALLER_TAG) or ("production" in self.args):
+        if (caller is MuUpdate.CALLER_TAG) or self.production:
             SCOPE += self.PRODUCTION_SCOPE
         return SCOPE
 
@@ -52,6 +52,15 @@ class SettingsManager(PlatformSettingsManager):
     def GetRequiredRepos(self, caller):
         ''' get required repos '''
         return self.REQUIRED_REPOS
+
+    def AddCommandLineOptions(self, parserObj):
+        ''' Add command line options to the argparser '''
+        parserObj.add_argument('--production', dest="production", action='store_true', default=False)
+
+    def RetrieveCommandLineOptions(self, args):
+        '''  Retrieve command line options from the argparser '''
+        self.production = args.production
+
 
 #
 # Supported Profiles and Settings based on the profile.  This allows easier grouping
