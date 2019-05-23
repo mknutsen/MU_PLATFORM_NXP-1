@@ -24,7 +24,8 @@ from MuEnvironment.PlatformSettingsManager import PlatformSettingsManager
 #
 
 class SettingsManager(PlatformSettingsManager):
-    def __init__(self):
+    def __init__(self, caller):
+        self.caller = caller
         SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
         self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
         self.REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
@@ -34,22 +35,22 @@ class SettingsManager(PlatformSettingsManager):
         self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
         self.production = None
 
-    def GetProjectScope(self, caller):
+    def GetProjectScope(self):
         ''' get scope '''
         SCOPE = self.BASE_SCOPE
-        if (caller is MuUpdate.CALLER_TAG) or self.production:
+        if (self.caller is MuUpdate.CALLER_TAG) or self.production:
             SCOPE += self.PRODUCTION_SCOPE
         return SCOPE
 
-    def GetWorkspaceRoot(self, caller):
+    def GetWorkspaceRoot(self):
         ''' get WorkspacePath '''
         return self.WORKSPACE_PATH
 
-    def GetModulePkgsPath(self, caller):
+    def GetModulePkgsPath(self):
         ''' get module packages path '''
         return self.MODULE_PKG_PATHS
 
-    def GetRequiredRepos(self, caller):
+    def GetRequiredRepos(self):
         ''' get required repos '''
         return self.REQUIRED_REPOS
 
