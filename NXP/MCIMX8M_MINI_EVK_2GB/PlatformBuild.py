@@ -108,6 +108,7 @@ class PlatformBuilder(UefiBuilder, BuildSettingsManager):
 
     def RetrieveCommandLineOptions(self, args):
         '''  Retrieve command line options from the argparser '''
+        UefiBuilder.RetrieveCommandLineOptions(self, args)
         self.production = args.production
 
     def SetPlatformEnv(self):
