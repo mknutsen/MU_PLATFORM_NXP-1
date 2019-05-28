@@ -14,18 +14,17 @@ import struct
 from datetime import datetime
 from datetime import date
 import time
-from MuEnvironment.MuUpdate import MuUpdate
 from MuEnvironment.UefiBuild import UefiBuilder
-from MuEnvironment.PlatformSettingsManager import PlatformSettingsManager
+from MuEnvironment.MuUpdate import UpdateSettingsManager
+from MuEnvironment.MuSetup import SetupSettingsManager
 
 #
 #==========================================================================
 # PLATFORM BUILD ENVIRONMENT CONFIGURATION
 #
 
-class SettingsManager(PlatformSettingsManager):
-    def __init__(self, caller):
-        self.caller = caller
+class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
+    def __init__(self):
         SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
         self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
         self.REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
@@ -38,7 +37,7 @@ class SettingsManager(PlatformSettingsManager):
     def GetProjectScope(self):
         ''' get scope '''
         SCOPE = self.BASE_SCOPE
-        if (self.caller is MuUpdate.CALLER_TAG) or self.production:
+        if self.production:
             SCOPE += self.PRODUCTION_SCOPE
         return SCOPE
 
