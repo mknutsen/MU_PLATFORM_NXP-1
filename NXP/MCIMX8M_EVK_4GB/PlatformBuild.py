@@ -17,13 +17,14 @@ import time
 from MuEnvironment.UefiBuild import UefiBuilder
 from MuEnvironment.MuUpdate import UpdateSettingsManager
 from MuEnvironment.MuSetup import SetupSettingsManager
+from MuEnvironment.MuPlatformBuild import BuildSettingsManager
 
 #
 #==========================================================================
 # PLATFORM BUILD ENVIRONMENT CONFIGURATION
 #
 
-class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
+class SettingsManager(UpdateSettingsManager, SetupSettingsManager, BuildSettingsManager):
     def __init__(self):
         SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
         self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))

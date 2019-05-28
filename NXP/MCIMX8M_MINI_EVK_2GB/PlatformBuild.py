@@ -14,18 +14,52 @@ from datetime import datetime
 from datetime import date
 import time
 from MuEnvironment.UefiBuild import UefiBuilder
+from MuEnvironment.MuUpdate import UpdateSettingsManager
+from MuEnvironment.MuSetup import SetupSettingsManager
+from MuEnvironment.MuPlatformBuild import BuildSettingsManager
 
 #
 #==========================================================================
 # PLATFORM BUILD ENVIRONMENT CONFIGURATION
 #
-SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
-WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
-REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
-PROJECT_SCOPE = ('imxfamily', 'imx8')
 
-MODULE_PKGS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
-MODULE_PKG_PATHS = os.pathsep.join(os.path.join(WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
+class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
+    def __init__(self):
+        SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+        self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
+        self.REQUIRED_REPOS = ('MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO')
+        self.PRODUCTION_SCOPE = ('production', )
+        self.BASE_SCOPE = ('imxfamily', 'imx8')
+        MODULE_PKGS = ['MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO']
+        self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
+        self.production = None
+
+    def GetProjectScope(self):
+        ''' get scope '''
+        SCOPE = self.BASE_SCOPE
+        if self.production:
+            SCOPE += self.PRODUCTION_SCOPE
+        return SCOPE
+
+    def GetWorkspaceRoot(self):
+        ''' get WorkspacePath '''
+        return self.WORKSPACE_PATH
+
+    def GetModulePkgsPath(self):
+        ''' get module packages path '''
+        return self.MODULE_PKG_PATHS
+
+    def GetRequiredRepos(self):
+        ''' get required repos '''
+        return self.REQUIRED_REPOS
+
+    def AddCommandLineOptions(self, parserObj):
+        ''' Add command line options to the argparser '''
+        parserObj.add_argument('--production', dest="production", action='store_true', default=False)
+
+    def RetrieveCommandLineOptions(self, args):
+        '''  Retrieve command line options from the argparser '''
+        self.production = args.production
 
 
 #
@@ -41,10 +75,40 @@ gProfile = {
 #--------------------------------------------------------------------------------------------------------
 # Subclass the UEFI builder and add platform specific functionality.
 #
-class PlatformBuilder(UefiBuilder):
+class PlatformBuilder(UefiBuilder, BuildSettingsManager):
+    def __init__(self):
+        UefiBuilder.__init__(self)
+        SCRIPT_PATH = os.path.dirname(os.path.abspath(__file__))
+        self.WORKSPACE_PATH = os.path.dirname(os.path.dirname(SCRIPT_PATH))
+        self.PRODUCTION_SCOPE = ('production', )
+        self.BASE_SCOPE = ('imxfamily', 'imx8')
+        MODULE_PKGS = ['MU_BASECORE','Silicon/ARM/NXP', 'Common/MU','Common/MU_TIANO', 'Common/MU_OEM_SAMPLE','Silicon/ARM/MU_TIANO']
+        self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
+        self.production = None
 
-    def __init__(self, WorkSpace, PackagesPath, PInManager, PInHelper, args):
-        super(PlatformBuilder, self).__init__(WorkSpace, PackagesPath, PInManager, PInHelper, args)
+    def GetProjectScope(self):
+        ''' get scope '''
+        SCOPE = self.BASE_SCOPE
+        if self.production:
+            SCOPE += self.PRODUCTION_SCOPE
+        return SCOPE
+
+    def GetWorkspaceRoot(self):
+        ''' get WorkspacePath '''
+        return self.WORKSPACE_PATH
+
+    def GetModulePkgsPath(self):
+        ''' get module packages path '''
+        return self.MODULE_PKG_PATHS
+
+    def AddCommandLineOptions(self, parserObj):
+        ''' Add command line options to the argparser '''
+        UefiBuilder.AddCommandLineOptions(self, parserObj)
+        parserObj.add_argument('--production', dest="production", action='store_true', default=False)
+
+    def RetrieveCommandLineOptions(self, args):
+        '''  Retrieve command line options from the argparser '''
+        self.production = args.production
 
     def SetPlatformEnv(self):
         logging.debug("PlatformBuilder SetPlatformEnv")
