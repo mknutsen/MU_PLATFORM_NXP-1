@@ -14,11 +14,11 @@ import struct
 from datetime import datetime
 from datetime import date
 import time
-from MuEnvironment.UefiBuild import UefiBuilder
-from MuEnvironment.MuUpdate import UpdateSettingsManager
-from MuEnvironment.MuSetup import SetupSettingsManager
-from MuEnvironment.MuPlatformBuild import BuildSettingsManager
 
+from edk2toolext.environment.uefi_build import UefiBuilder
+from edk2toolext.invocables.edk2_platform_build import BuildSettingsManager
+from edk2toolext.invocables.edk2_setup import SetupSettingsManager
+from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 #
 #==========================================================================
 # PLATFORM BUILD ENVIRONMENT CONFIGURATION
@@ -35,7 +35,7 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager, BuildSettings
         self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
         self.production = None
 
-    def GetProjectScope(self):
+    def GetActiveScopes(self):
         ''' get scope '''
         SCOPE = self.BASE_SCOPE
         if self.production:

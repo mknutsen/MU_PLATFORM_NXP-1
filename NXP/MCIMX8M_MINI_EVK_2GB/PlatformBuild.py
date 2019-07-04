@@ -13,10 +13,10 @@ import struct
 from datetime import datetime
 from datetime import date
 import time
-from MuEnvironment.UefiBuild import UefiBuilder
-from MuEnvironment.MuUpdate import UpdateSettingsManager
-from MuEnvironment.MuSetup import SetupSettingsManager
-from MuEnvironment.MuPlatformBuild import BuildSettingsManager
+from edk2toolext.environment.uefi_build import UefiBuilder
+from edk2toolext.invocables.edk2_platform_build import BuildSettingsManager
+from edk2toolext.invocables.edk2_setup import SetupSettingsManager
+from edk2toolext.invocables.edk2_update import UpdateSettingsManager
 
 #
 #==========================================================================
