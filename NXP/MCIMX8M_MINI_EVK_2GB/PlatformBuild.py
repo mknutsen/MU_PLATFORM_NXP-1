@@ -34,7 +34,7 @@ class SettingsManager(UpdateSettingsManager, SetupSettingsManager):
         self.MODULE_PKG_PATHS = os.pathsep.join(os.path.join(self.WORKSPACE_PATH, pkg_name) for pkg_name in MODULE_PKGS)
         self.production = None
 
-    def GetProjectScope(self):
+    def GetActiveScopes(self):
         ''' get scope '''
         SCOPE = self.BASE_SCOPE
         if self.production:
